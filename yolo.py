@@ -103,7 +103,7 @@ class YOLO(object):
         return_class_names = []
         for i, c in reversed(list(enumerate(out_classes))):
             predicted_class = self.class_names[c]
-            if predicted_class not in ['car', 'motorbike']:  # Modify to detect other classes.
+            if predicted_class not in ['person', 'handbag', 'backpack', 'suitcase']:  # Modify to detect other classes.
                 continue
             box = out_boxes[i]
             score = out_scores[i]

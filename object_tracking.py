@@ -119,15 +119,15 @@ def main(yolo):
             if len(classes) > 0:
                 cls = det.cls
                 center_bbox = (int(bbox[2]), int(bbox[2]))
-                if str(cls) == 'car':
-                    # Draw Blue bbox for YOLOv4 car detection
+                if str(cls) == 'person':
+                    # Draw Blue bbox for YOLOv4 person detection
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 0, 0), 2)
-                elif str(cls) == 'motorbike':
-                    # Draw Orange bbox for YOLOv4 Motorbike detection
+                elif str(cls) == 'handbag' or 'backpack' or 'suitcase':
+                    # Draw Orange bbox for YOLOv4 handbag, backpack and suitcase detection
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 140, 255), 2)
 
 
-        cv2.imshow('', frame)
+        #cv2.imshow('', frame)
 
         if writeVideo_flag: # and not asyncVideo_flag:
             # save a frame
@@ -155,7 +155,7 @@ def main(yolo):
     if writeVideo_flag:
         out.release()
 
-    cv2.destroyAllWindows()
+    #cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main(YOLO())
