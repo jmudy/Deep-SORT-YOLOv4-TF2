@@ -5,7 +5,7 @@ numpy
 pillow
 scikit-learn
 scipy
-tensorboard
-tensorflow
-tensorflow-estimator
-tensorflow-gpu
+tensorboard==2.1.1
+tensorflow==2.2.0
+tensorflow-estimator==2.1.0
+tensorflow-gpu==2.1.0
