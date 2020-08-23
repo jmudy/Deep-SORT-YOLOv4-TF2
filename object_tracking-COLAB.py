@@ -122,7 +122,7 @@ def main(yolo):
                 if str(cls) == 'person':
                     # Draw Blue bbox for YOLOv4 person detection
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 0, 0), 2)
-                elif str(cls) == 'backpack', 'handbag', 'suitcase':
+                elif str(cls) == 'backpack' or 'handbag' or 'suitcase':
                     # Draw Orange bbox for YOLOv4 handbag, backpack and suitcase detection
                     cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 140, 255), 2)
 
