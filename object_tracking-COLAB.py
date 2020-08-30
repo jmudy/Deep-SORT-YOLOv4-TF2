@@ -62,12 +62,11 @@ def main(yolo):
             h = int(video_capture.get(4))
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         output_file = os.path.basename(file_path)[:-4]
-        out = cv2.VideoWriter('/mydrive/' + output_file + "_output.mp4", fourcc, 30, (w, h))
+        out = cv2.VideoWriter('/mydrive/' + output_file + "-prueba-movidas.mp4", fourcc, 30, (w, h))
         frame_index = -1
 
     fps = 0.0
     fps_imutils = imutils.video.FPS().start()
-
 
     while True:
         ret, frame = video_capture.read() # Capture frames
@@ -109,8 +108,7 @@ def main(yolo):
                 bbox = track.to_tlbr()
                 # Draw white bbox for DeepSORT
                 cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 255, 255), 2)
-                cv2.putText(frame, "ID: " + str(track.track_id), (int(bbox[0]), int(bbox[1])), 0,
-                            1.5e-3 * frame.shape[0], (0, 255, 0), 1)
+                cv2.putText(frame, "ID: " + str(track.track_id), (int(bbox[0]), int(bbox[1])), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.5,(0, 255, 0), 1)
 
         for det in detections:
             bbox = det.to_tlbr()
@@ -121,11 +119,16 @@ def main(yolo):
                 center_bbox = (int(bbox[2]), int(bbox[2]))
                 if str(cls) == 'person':
                     # Draw Blue bbox for YOLOv4 person detection
-                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 0, 0), 2)
+                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (219, 152, 52), 2)
                 elif str(cls) == 'backpack' or 'handbag' or 'suitcase':
                     # Draw Orange bbox for YOLOv4 handbag, backpack and suitcase detection
-                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 140, 255), 2)
+                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (65, 176, 245), 2)
 
+        if not asyncVideo_flag:
+            fps = (fps + (1./(time.time()-t1))) / 2
+            print("FPS = %f"%(fps))
+            cv2.putText(frame, "GPU: NVIDIA Tesla P100", (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 100), 2)
+            cv2.putText(frame, "FPS: %.2f" % fps, (5, 60), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 255), 2)
 
         #cv2.imshow('', frame)
 
@@ -135,11 +138,7 @@ def main(yolo):
             frame_index = frame_index + 1
 
         fps_imutils.update()
-
-        if not asyncVideo_flag:
-            fps = (fps + (1./(time.time()-t1))) / 2
-            print("FPS = %f"%(fps))
-        
+          
         # Press Q to stop!
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -154,7 +153,7 @@ def main(yolo):
 
     if writeVideo_flag:
         out.release()
-
+     
     #cv2.destroyAllWindows()
 
 if __name__ == '__main__':
