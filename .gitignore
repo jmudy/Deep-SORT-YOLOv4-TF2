@@ -131,3 +131,6 @@ dmypy.json
 # Weights
 *.weights
 *.h5
+
+Input/*.avi
+Output/*.mp4

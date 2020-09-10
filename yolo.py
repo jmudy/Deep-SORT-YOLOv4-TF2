@@ -7,11 +7,9 @@ Class definition of YOLO_v4 style detection model on image and video
 """
 
 import colorsys
-
 import numpy as np
 import tensorflow.python.keras.backend as K
 from keras.models import load_model
-
 from yolo4.model import yolo_eval, Mish
 from yolo4.utils import letterbox_image
 import os
@@ -23,7 +21,7 @@ class YOLO(object):
         self.anchors_path = 'model_data/yolo_anchors.txt'
         self.classes_path = 'model_data/coco_classes.txt'
         self.gpu_num = 1
-        self.score = 0.5
+        self.score = 0.25 # pruebas modificando threshold
         self.iou = 0.5
         self.class_names = self._get_class()
         self.anchors = self._get_anchors()
@@ -103,7 +101,7 @@ class YOLO(object):
         return_class_names = []
         for i, c in reversed(list(enumerate(out_classes))):
             predicted_class = self.class_names[c]
-            if predicted_class not in ['car', 'motorbike']:  # Modify to detect other classes.
+            if predicted_class not in ['person', 'handbag', 'suitcase', 'backpack']:  # Modify to detect other classes.
                 continue
             box = out_boxes[i]
             score = out_scores[i]

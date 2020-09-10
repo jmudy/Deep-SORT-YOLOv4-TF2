@@ -3,15 +3,14 @@
 #  https://augmentedstartups.info/yolov4release
 #================================================================ 
 from __future__ import division, print_function, absolute_import
-
 from timeit import time
 import os
 import warnings
 import cv2
 import numpy as np
+import datetime
 from PIL import Image
 from yolo import YOLO
-
 from deep_sort import preprocessing
 from deep_sort import nn_matching
 from deep_sort.detection import Detection
@@ -43,7 +42,7 @@ def main(yolo):
     asyncVideo_flag = False # It uses asynchronous processing for better FPS :Warning: Shuttering Problem
 
     # Video File Path
-    file_path = './Input/test1.mp4'
+    file_path = './Input/video1.avi'
     # Check if asyncVideo flag set to True
     if asyncVideo_flag :
         video_capture = VideoCaptureAsync(file_path)
@@ -67,7 +66,6 @@ def main(yolo):
 
     fps = 0.0
     fps_imutils = imutils.video.FPS().start()
-
 
     while True:
         ret, frame = video_capture.read() # Capture frames
@@ -109,8 +107,7 @@ def main(yolo):
                 bbox = track.to_tlbr()
                 # Draw white bbox for DeepSORT
                 cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 255, 255), 2)
-                cv2.putText(frame, "ID: " + str(track.track_id), (int(bbox[0]), int(bbox[1])), 0,
-                            1.5e-3 * frame.shape[0], (0, 255, 0), 1)
+                cv2.putText(frame, "ID: " + str(track.track_id), (int(bbox[0]), int(bbox[1])), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1.5,(0, 255, 0), 1)
 
         for det in detections:
             bbox = det.to_tlbr()
@@ -119,13 +116,23 @@ def main(yolo):
             if len(classes) > 0:
                 cls = det.cls
                 center_bbox = (int(bbox[2]), int(bbox[2]))
-                if str(cls) == 'car':
+                if str(cls) == 'person':
                     # Draw Blue bbox for YOLOv4 person detection
-                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (255, 0, 0), 2)
-                elif str(cls) == 'motorbike':
+                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (219, 152, 52), 2)
+                elif str(cls) == 'backpack' or 'handbag' or 'suitcase':
                     # Draw Orange bbox for YOLOv4 handbag, backpack and suitcase detection
-                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 140, 255), 2)
+                    cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (65, 176, 245), 2)
 
+        if not asyncVideo_flag:
+            fps = (fps + (1./(time.time()-t1))) / 2
+            print("FPS = %f"%(fps))
+            cv2.putText(frame, "GPU: NVIDIA GEFORCE GTX 960M", (5, 70), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)
+            cv2.putText(frame, "FPS: %.2f" % fps, (5, 50), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)
+
+            # draw the timestamp on the frame
+            timestamp = datetime.datetime.now()
+            ts = timestamp.strftime("%d/%m/%Y, %H:%M:%S")
+            cv2.putText(frame, ts, (5, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)
 
         cv2.imshow('', frame)
 
@@ -135,10 +142,6 @@ def main(yolo):
             frame_index = frame_index + 1
 
         fps_imutils.update()
-
-        if not asyncVideo_flag:
-            fps = (fps + (1./(time.time()-t1))) / 2
-            print("FPS = %f"%(fps))
         
         # Press Q to stop!
         if cv2.waitKey(1) & 0xFF == ord('q'):

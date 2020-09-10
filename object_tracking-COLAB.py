@@ -3,15 +3,14 @@
 #  https://augmentedstartups.info/yolov4release
 #================================================================ 
 from __future__ import division, print_function, absolute_import
-
 from timeit import time
 import os
 import warnings
 import cv2
 import numpy as np
+import datetime
 from PIL import Image
 from yolo_COLAB import YOLO
-
 from deep_sort import preprocessing
 from deep_sort import nn_matching
 from deep_sort.detection import Detection
@@ -43,7 +42,7 @@ def main(yolo):
     asyncVideo_flag = False # It uses asynchronous processing for better FPS :Warning: Shuttering Problem
 
     # Video File Path
-    file_path = '/mydrive/video1.avi'
+    file_path = '/mydrive/videos-datasets/video1.avi'
     # Check if asyncVideo flag set to True
     if asyncVideo_flag :
         video_capture = VideoCaptureAsync(file_path)
@@ -127,8 +126,13 @@ def main(yolo):
         if not asyncVideo_flag:
             fps = (fps + (1./(time.time()-t1))) / 2
             print("FPS = %f"%(fps))
-            cv2.putText(frame, "GPU: NVIDIA Tesla P100", (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 100), 2)
-            cv2.putText(frame, "FPS: %.2f" % fps, (5, 60), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 255), 2)
+            cv2.putText(frame, "GPU: NVIDIA Tesla P100", (5, 70), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)
+            cv2.putText(frame, "FPS: %.2f" % fps, (5, 50), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)
+
+            # draw the timestamp on the frame
+            timestamp = datetime.datetime.now()
+            ts = timestamp.strftime("%d/%m/%Y, %H:%M:%S")
+            cv2.putText(frame, ts, (5, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.8, (0, 255, 0), 1)            
 
         #cv2.imshow('', frame)
 
