@@ -61,7 +61,7 @@ def main(yolo):
             h = int(video_capture.get(4))
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         output_file = os.path.basename(file_path)[:-4]
-        out = cv2.VideoWriter('/mydrive/' + output_file + "-prueba-test.avi", fourcc, 30, (w, h))
+        out = cv2.VideoWriter('./Output/' + output_file + "-prueba-test.avi", fourcc, 30, (w, h))
         frame_index = -1
 
     fps = 0.0
