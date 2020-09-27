@@ -21,7 +21,7 @@ class YOLO(object):
         self.anchors_path = 'model_data/yolo_anchors.txt'
         self.classes_path = 'model_data/coco_classes.txt'
         self.gpu_num = 1
-        self.score = 0.35 # pruebas modificando threshold
+        self.score = 0.5 # pruebas modificando threshold
         self.iou = 0.5
         self.class_names = self._get_class()
         self.anchors = self._get_anchors()

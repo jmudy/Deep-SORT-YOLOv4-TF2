@@ -42,7 +42,7 @@ def main(yolo):
     asyncVideo_flag = False # It uses asynchronous processing for better FPS :Warning: Shuttering Problem
 
     # Video File Path
-    file_path = '/mydrive/videos-datasets/video1.avi'
+    file_path = '/mydrive/videos-datasets/test.mp4'
     # Check if asyncVideo flag set to True
     if asyncVideo_flag :
         video_capture = VideoCaptureAsync(file_path)
@@ -61,7 +61,7 @@ def main(yolo):
             h = int(video_capture.get(4))
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         output_file = os.path.basename(file_path)[:-4]
-        out = cv2.VideoWriter('/mydrive/' + output_file + "-prueba-movidas.mp4", fourcc, 30, (w, h))
+        out = cv2.VideoWriter('/mydrive/' + output_file + "-prueba-test.avi", fourcc, 30, (w, h))
         frame_index = -1
 
     fps = 0.0
