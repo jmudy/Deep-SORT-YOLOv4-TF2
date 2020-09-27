@@ -3,6 +3,7 @@ This repo will be used to design, implement and evaluate a strategy for detectin
 
 To change the classes to track you must change the following lines:
 
-```object _tracking.py >> lines 122 and 125```
+```object_tracking.py or object_tracking-COLAB.py >> lines 119 and 122```
 
-```yolo.py >> line 106```
+
+```yolo.py or yolo_COLAB >> line 104```
