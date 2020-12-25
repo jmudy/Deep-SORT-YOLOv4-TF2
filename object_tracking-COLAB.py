@@ -42,7 +42,7 @@ def main(yolo):
     asyncVideo_flag = False # It uses asynchronous processing for better FPS :Warning: Shuttering Problem
 
     # Video File Path
-    file_path = '/mydrive/videos-datasets/test.mp4'
+    file_path = '/mydrive/test.mp4'
     # Check if asyncVideo flag set to True
     if asyncVideo_flag :
         video_capture = VideoCaptureAsync(file_path)
